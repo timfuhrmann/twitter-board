@@ -3,10 +3,12 @@ import styled from "styled-components";
 import { Grid, SearchBar, SearchContext, SearchContextManager } from "@giphy/react-components";
 import { App } from "../types/app";
 import { GiphyFetch } from "@giphy/js-fetch-api";
+import { Close, Icon } from "../lib/icon";
+import { Content } from "../css/content";
 
 const GifsWrapper = styled.div`
     position: fixed;
-    z-index: 1;
+    z-index: 5;
     top: 0;
     left: 0;
     display: flex;
@@ -26,8 +28,9 @@ const GifsWrapper = styled.div`
 `;
 
 const GifsInner = styled.div`
-    width: 80rem;
-    height: 80rem;
+    position: relative;
+    width: 100%;
+    height: 80vh;
     border-radius: 0.5rem;
     background-color: ${p => p.theme.black};
     overflow-y: auto;
@@ -52,7 +55,17 @@ const GifsSearch = styled.div`
     flex: 1;
     border-radius: 0.5rem;
     overflow: hidden;
-    margin-left: 1rem;
+    margin-left: 3.5rem;
+`;
+
+const GifsClose = styled.button`
+    position: fixed;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0.3rem;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
 `;
 
 interface GifsProps {
@@ -69,26 +82,30 @@ const Giphy: React.FC<GifsProps> = ({ onSelect, onClose }) => {
 
     return (
         <GifsWrapper>
-            <GifsInner>
-                <GifsHead>
-                    <button onClick={onClose}>Back</button>
-                    <GifsSearch>
-                        <SearchBar />
-                    </GifsSearch>
-                </GifsHead>
-                <Grid
-                    columns={3}
-                    key={searchKey}
-                    fetchGifs={searchKey ? fetchGifs : fetchTrendingGifs}
-                    width={800}
-                    onGifClick={gif => {
-                        onSelect(gif.images.original);
-                        onClose();
-                    }}
-                    noLink
-                    hideAttribution
-                />
-            </GifsInner>
+            <Content>
+                <GifsInner>
+                    <GifsHead>
+                        <GifsClose onClick={onClose}>
+                            <Icon name="close" icon={Close} />
+                        </GifsClose>
+                        <GifsSearch>
+                            <SearchBar />
+                        </GifsSearch>
+                    </GifsHead>
+                    <Grid
+                        columns={3}
+                        key={searchKey}
+                        fetchGifs={searchKey ? fetchGifs : fetchTrendingGifs}
+                        width={800}
+                        onGifClick={gif => {
+                            onSelect(gif.images.original);
+                            onClose();
+                        }}
+                        noLink
+                        hideAttribution
+                    />
+                </GifsInner>
+            </Content>
         </GifsWrapper>
     );
 };

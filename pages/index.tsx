@@ -44,7 +44,7 @@ const HomeContent = styled(Content)`
     border-top: none;
 `;
 
-const HomeStage = styled(HomeContent)`
+const HomeStage = styled.div`
     height: 100%;
     flex: 1;
     overflow-y: scroll;
@@ -62,7 +62,9 @@ const Home: React.FC = () => {
                     <HomeSpacer />
                 </HomeContent>
                 <HomeStage>
-                    <TweetList />
+                    <HomeContent>
+                        <TweetList />
+                    </HomeContent>
                 </HomeStage>
             </HomeInner>
         </HomeWrapper>

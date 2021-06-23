@@ -9,6 +9,10 @@ import { useFirebase } from "../context/FirebaseProvider";
 const TweetWrapper = styled.div`
     padding: 2rem;
     border-bottom: 0.1rem solid ${p => p.theme.grey};
+
+    &:last-child {
+        border: none;
+    }
 `;
 
 const TweetImage = styled.img`
