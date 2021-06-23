@@ -21,6 +21,7 @@ const TweetImage = styled.img`
     margin: 1rem 0 0;
     overflow: hidden;
     background-color: ${p => p.theme.blackGrey};
+    height: auto;
 `;
 
 const TweetText = styled.div``;

@@ -33,15 +33,21 @@ const HomeSpacer = styled.div`
 const HomeHeader = styled.div`
     display: flex;
     align-items: center;
-    height: 7.5rem;
+    height: 6rem;
     padding: 0 2rem;
     border-bottom: 0.1rem solid ${p => p.theme.grey};
+
+    @media ${p => p.theme.bp.l} {
+        height: 7.5rem;
+    }
 `;
 
 const HomeContent = styled(Content)`
-    border: 0.1rem solid ${p => p.theme.grey};
-    border-bottom: none;
-    border-top: none;
+    @media ${p => p.theme.bp.m} {
+        border: 0.1rem solid ${p => p.theme.grey};
+        border-bottom: none;
+        border-top: none;
+    }
 `;
 
 const HomeStage = styled.div`
@@ -54,15 +60,15 @@ const Home: React.FC = () => {
     return (
         <HomeWrapper>
             <HomeInner>
-                <HomeContent>
+                <HomeContent breakMobile>
                     <HomeHeader>
                         <Headline>Tweets</Headline>
                     </HomeHeader>
-                    <Input />
-                    <HomeSpacer />
                 </HomeContent>
                 <HomeStage>
-                    <HomeContent>
+                    <HomeContent breakMobile>
+                        <Input />
+                        <HomeSpacer />
                         <TweetList />
                     </HomeContent>
                 </HomeStage>
