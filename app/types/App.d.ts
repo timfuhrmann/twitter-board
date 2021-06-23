@@ -1,5 +1,14 @@
 export namespace App {
     interface Tweet {
-        message: string;
+        id: string;
+        message: string | null;
+        image: Image | null;
+        date: number;
+    }
+
+    interface Image {
+        url: string;
+        height: number;
+        width: number;
     }
 }

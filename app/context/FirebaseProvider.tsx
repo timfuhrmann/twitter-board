@@ -6,6 +6,7 @@ export const COLLECTION_TWEETS = "tweets";
 
 interface FirebaseData {
     tweets: App.Tweet[];
+    addTweet: (tweet: App.Tweet) => void;
 }
 
 const FirebaseContext = createContext<FirebaseData>({} as FirebaseData);
@@ -15,7 +16,7 @@ interface FirebaseProviderProps {
 }
 
 export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ initialTweets, children }) => {
-    const [tweets, setTweets] = useState<App.Tweet[]>(initialTweets || []);
+    const [tweets, setTweets] = useState<App.Tweet[]>(initialTweets);
 
     useEffect(() => {
         createSnapshotListener();
@@ -30,7 +31,20 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ initialTweet
             });
     };
 
-    return <FirebaseContext.Provider value={{ tweets }}>{children}</FirebaseContext.Provider>;
+    const addTweet = (tweet: App.Tweet) => {
+        firebase
+            .firestore()
+            .collection(COLLECTION_TWEETS)
+            .add(tweet)
+            .then(ref => {
+                ref.set({ id: ref.id }, { merge: true }).catch(console.error);
+            })
+            .catch(console.error);
+    };
+
+    return (
+        <FirebaseContext.Provider value={{ tweets, addTweet }}>{children}</FirebaseContext.Provider>
+    );
 };
 
 export const useFirebase = () => useContext(FirebaseContext);

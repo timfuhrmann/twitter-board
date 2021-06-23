@@ -2,6 +2,11 @@ export const theme = {
     //region Color
     black: "#000",
     white: "#fff",
+    grey: "#2f3336",
+    blackGrey: "#15181c",
+    lightGrey: "#6e767d",
+    primary: "#1da1f2",
+    primaryDark: "#1a8fd5",
     //endregion
 
     //region Breakpoints

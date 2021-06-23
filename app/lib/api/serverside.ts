@@ -9,7 +9,12 @@ const db = <T>(endpoint: string): Promise<T> => {
         .catch(console.error);
 };
 
-export const fetchTweets = async () => {
+export const fetchTweets = async (): Promise<App.Tweet[]> => {
     const { documents } = await db<Firebase.FirebaseResponse<App.Tweet>>("/tweets");
-    return documents.map(doc => doc.fields);
+
+    if (documents) {
+        return documents.map(doc => doc.fields);
+    }
+
+    return [];
 };
