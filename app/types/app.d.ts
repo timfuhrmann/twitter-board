@@ -11,4 +11,6 @@ export namespace App {
         height: number;
         width: number;
     }
+
+    type Like = Record<string, string>;
 }

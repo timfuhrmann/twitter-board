@@ -7,7 +7,7 @@ import { FirebaseProvider } from "../app/context/FirebaseProvider";
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     return (
-        <FirebaseProvider initialTweets={pageProps.tweets}>
+        <FirebaseProvider initialTweets={pageProps.tweets} initialLikes={pageProps.likes}>
             <ThemeProvider theme={theme}>
                 <GlobalStyle />
                 <Component {...pageProps} />

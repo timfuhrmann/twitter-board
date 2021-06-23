@@ -1,15 +1,14 @@
 import React from "react";
-import { App } from "../types/App";
+import { App } from "../types/app";
 import styled from "styled-components";
 import { parseDate } from "../lib/date";
+import { Icon, Heart } from "../lib/icon";
+import { ButtonIconRed } from "./ButtonIcon";
+import { useFirebase } from "../context/FirebaseProvider";
 
 const TweetWrapper = styled.div`
     padding: 2rem;
     border-bottom: 0.1rem solid ${p => p.theme.grey};
-
-    &:last-child {
-        border: none;
-    }
 `;
 
 const TweetImage = styled.img`
@@ -34,7 +33,14 @@ const TweetInfo = styled.span`
     color: ${p => p.theme.lightGrey};
 `;
 
-export const Tweet: React.FC<App.Tweet> = ({ message, image, date }) => {
+const TweetControls = styled.div`
+    display: flex;
+    color: ${p => p.theme.lightGrey};
+    margin-top: 1rem;
+`;
+
+export const Tweet: React.FC<App.Tweet> = ({ message, image, date, id }) => {
+    const { likeTweet, hasLiked, getLikes } = useFirebase();
     return (
         <TweetWrapper>
             <TweetHead>
@@ -50,6 +56,14 @@ export const Tweet: React.FC<App.Tweet> = ({ message, image, date }) => {
                     height={image.height}
                 />
             )}
+            <TweetControls>
+                <ButtonIconRed
+                    onClick={() => likeTweet(id)}
+                    active={hasLiked(id)}
+                    data-info={getLikes(id) > 0 ? getLikes(id) : undefined}>
+                    <Icon name="heart" icon={Heart} />
+                </ButtonIconRed>
+            </TweetControls>
         </TweetWrapper>
     );
 };

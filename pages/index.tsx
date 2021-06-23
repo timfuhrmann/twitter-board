@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { GetServerSideProps } from "next";
-import { fetchTweets } from "../app/lib/api/serverside";
+import { fetchLikes, fetchTweets } from "../app/lib/api/serverside";
 import { Input } from "../app/components/Input";
 import { TweetList } from "../app/components/TweetList";
 import { Headline } from "../app/css/typo";
@@ -71,9 +71,11 @@ const Home: React.FC = () => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
     const tweets = await fetchTweets();
+    const likes = await fetchLikes();
 
     return {
         props: {
+            likes,
             tweets,
         },
     };

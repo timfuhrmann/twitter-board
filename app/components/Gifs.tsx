@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { Grid, SearchBar, SearchContext, SearchContextManager } from "@giphy/react-components";
-import { App } from "../types/App";
+import { App } from "../types/app";
 import { GiphyFetch } from "@giphy/js-fetch-api";
 
 const GifsWrapper = styled.div`

@@ -7,6 +7,8 @@ export const theme = {
     lightGrey: "#6e767d",
     primary: "#1da1f2",
     primaryDark: "#1a8fd5",
+    red: "#e0245e",
+    redDark: "#c11e4d",
     //endregion
 
     //region Breakpoints

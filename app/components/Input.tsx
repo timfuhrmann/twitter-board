@@ -3,8 +3,9 @@ import React, { useRef, useState } from "react";
 import { useFirebase } from "../context/FirebaseProvider";
 import { Button } from "./Button";
 import { Gifs } from "./Gifs";
-import { App } from "../types/App";
+import { App } from "../types/app";
 import { Icon, IconGif, Close } from "../lib/icon";
+import { ButtonIcon } from "./ButtonIcon";
 
 const InputWrapper = styled.div`
     padding: 2rem;
@@ -72,53 +73,6 @@ const ButtonRemoveImage = styled.button`
 const ButtonRemoveIcon = styled.div`
     width: 1.5rem;
     height: 1.5rem;
-`;
-
-const ButtonGif = styled.button`
-    position: relative;
-    width: 2.2rem;
-    height: 2.2rem;
-    color: ${p => p.theme.primary};
-    transition: color 0.2s;
-    will-change: color;
-
-    &::after {
-        content: "";
-        position: absolute;
-        z-index: -1;
-        top: 50%;
-        left: 50%;
-        width: 4rem;
-        height: 4rem;
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        background-color: ${p => p.theme.primary};
-        opacity: 0;
-        transition: opacity 0.2s;
-        will-change: opacity;
-    }
-
-    @media (hover: hover) {
-        &:not(:disabled):hover {
-            color: ${p => p.theme.primaryDark};
-
-            &::after {
-                opacity: 0.1;
-            }
-        }
-    }
-
-    &:not(:disabled):active {
-        color: ${p => p.theme.primary};
-
-        &::after {
-            opacity: 0.2;
-        }
-    }
-
-    &:disabled {
-        opacity: 0.5;
-    }
 `;
 
 export const Input: React.FC = () => {
@@ -189,9 +143,9 @@ export const Input: React.FC = () => {
                 )}
             </InputArea>
             <InputControls>
-                <ButtonGif onClick={() => setGifsActive(true)} disabled={!!image}>
+                <ButtonIcon onClick={() => setGifsActive(true)} disabled={!!image} active>
                     <Icon name="gif" icon={IconGif} />
-                </ButtonGif>
+                </ButtonIcon>
                 <Button onClick={onSubmit} disabled={!inputContent && !image}>
                     Tweet
                 </Button>
