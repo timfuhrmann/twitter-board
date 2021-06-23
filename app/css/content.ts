@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Content = styled.div<{ breakMobile?: boolean }>`
+export const Content = styled.div<{ breakMobile?: boolean; breakDesktop?: boolean }>`
     ${p =>
         !p.breakMobile &&
         `
@@ -8,9 +8,13 @@ export const Content = styled.div<{ breakMobile?: boolean }>`
         width: calc(100% - 4rem);
     `}
 
-    @media ${p => p.theme.bp.m} {
-        max-width: 70rem;
-        width: calc(100% - 20rem);
-        margin: 0 auto;
-    }
+    ${p =>
+        !p.breakDesktop &&
+        `
+        @media ${p.theme.bp.m} {
+            max-width: 70rem;
+            width: calc(100% - 20rem);
+            margin: 0 auto;
+        }
+    `}
 `;

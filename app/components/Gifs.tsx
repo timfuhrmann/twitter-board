@@ -30,11 +30,12 @@ const GifsWrapper = styled.div`
 const GifsInner = styled.div`
     position: relative;
     width: 100%;
+    max-width: 80rem;
     height: 80vh;
+    margin: 0 auto;
     border-radius: 0.5rem;
     background-color: ${p => p.theme.black};
     overflow-y: auto;
-
     opacity: 0;
     animation: 0.4s fade-in ease forwards;
 
@@ -82,7 +83,7 @@ const Giphy: React.FC<GifsProps> = ({ onSelect, onClose }) => {
 
     return (
         <GifsWrapper>
-            <Content>
+            <Content breakDesktop>
                 <GifsInner>
                     <GifsHead>
                         <GifsClose onClick={onClose}>
