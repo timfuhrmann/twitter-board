@@ -1,6 +1,11 @@
-This boilerplate is a [Next.js](https://nextjs.org/) project using [Typescript](https://www.typescriptlang.org/) and [Styled Components](https://styled-components.com/).
+A small, public twitter board built with Next.js and Google Cloud Platform.
+
+Like, comment or write a message here: https://next-twitter-gcp.vercel.app/
 
 ## Getting Started
+
+Make sure to copy paste the `.env.public` contents to your local dotenv file and fill in the missing fields.
+
 
 Run the development server:
 
