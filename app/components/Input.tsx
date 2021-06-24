@@ -6,6 +6,7 @@ import { Gifs } from "./Gifs";
 import { App } from "../types/app";
 import { Icon, IconGif, Close } from "../lib/icon";
 import { ButtonIcon } from "./ButtonIcon";
+import { Modal } from "./Modal";
 
 const InputWrapper = styled.div`
     padding: 2rem;
@@ -75,8 +76,12 @@ const ButtonRemoveIcon = styled.div`
     height: 1.5rem;
 `;
 
-export const Input: React.FC = () => {
-    const { addTweet } = useFirebase();
+interface InputProps {
+    placeholder: string;
+    onTweet: (tweet: App.Tweet) => void;
+}
+
+export const Input: React.FC<InputProps> = ({ placeholder, onTweet }) => {
     const inputRef = useRef<HTMLDivElement | null>(null);
     const [gifsActive, setGifsActive] = useState<boolean>(false);
     const [image, setImage] = useState<App.Image | null>(null);
@@ -88,7 +93,7 @@ export const Input: React.FC = () => {
             return;
         }
 
-        addTweet({ message: inputContent, image: image, date: Date.now(), id: "" });
+        onTweet({ message: inputContent, image: image, date: Date.now(), comment: null, id: "" });
         inputReset();
     };
 
@@ -106,7 +111,7 @@ export const Input: React.FC = () => {
         <InputWrapper>
             <InputArea>
                 <TextArea>
-                    {!inputText && <TextPlaceholder>Leave a message!</TextPlaceholder>}
+                    {!inputText && <TextPlaceholder>{placeholder}</TextPlaceholder>}
                     <TextInput
                         ref={inputRef}
                         role="textbox"
@@ -151,7 +156,9 @@ export const Input: React.FC = () => {
                 </Button>
             </InputControls>
             {gifsActive && (
-                <Gifs onSelect={url => setImage(url)} onClose={() => setGifsActive(false)} />
+                <Modal>
+                    <Gifs onSelect={url => setImage(url)} onClose={() => setGifsActive(false)} />
+                </Modal>
             )}
         </InputWrapper>
     );

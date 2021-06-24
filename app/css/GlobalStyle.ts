@@ -12,6 +12,8 @@ export const GlobalStyle = createGlobalStyle`
         background-color: ${p => p.theme.black};
         color: ${p => p.theme.white};
         ${FlowText};
+        word-break: break-word;
+        hyphens: auto;
     }
     
     .icon {

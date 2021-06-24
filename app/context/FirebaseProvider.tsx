@@ -8,7 +8,10 @@ export const STORAGE_LIKES = "twitter-board-likes";
 
 interface FirebaseData {
     tweets: App.Tweet[];
-    addTweet: (tweet: App.Tweet) => void;
+    activeTweet: App.Tweet | null;
+    comments: App.Tweet[];
+    addTweet: (tweet: App.Tweet, id?: string) => void;
+    setActiveTweetId: (id: string) => void;
     likeTweet: (id: string) => void;
     hasLiked: (id: string) => boolean;
     getLikes: (id: string) => number;
@@ -26,7 +29,10 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
     initialLikes,
     children,
 }) => {
+    const [activeTweetId, setActiveTweetId] = useState<string>("");
+    const [activeTweet, setActiveTweet] = useState<App.Tweet | null>(null);
     const [tweets, setTweets] = useState<App.Tweet[]>(initialTweets);
+    const [comments, setComments] = useState<App.Tweet[]>([]);
     const [likes, setLikes] = useState<string[]>(initialLikes);
     const [liked, setLiked] = useState<App.Like>({});
 
@@ -45,12 +51,43 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
         localStorage.setItem(STORAGE_LIKES, JSON.stringify(liked));
     }, [liked]);
 
+    useEffect(() => {
+        return () => {
+            setActiveTweet(null);
+            setComments([]);
+        };
+    }, [activeTweetId]);
+
+    useEffect(() => {
+        if (!activeTweetId || !tweets) {
+            return;
+        }
+
+        setComments(tweets.filter(tweet => tweet.comment === activeTweetId));
+
+        const value = tweets.find(tweet => tweet.id === activeTweetId);
+
+        if (!value) {
+            return;
+        }
+
+        setActiveTweet(value);
+    }, [activeTweetId, tweets]);
+
     const createTweetsListener = () => {
         firebase
             .firestore()
             .collection(COLLECTION_TWEETS)
+            .orderBy("date", "desc")
             .onSnapshot(snapshot => {
-                setTweets(snapshot.docs.map(doc => doc.data()) as App.Tweet[]);
+                setTweets(
+                    snapshot.docs.map(doc => {
+                        return {
+                            ...doc.data(),
+                            id: doc.id,
+                        };
+                    }) as App.Tweet[]
+                );
             });
     };
 
@@ -63,36 +100,33 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
             });
     };
 
-    const addTweet = (tweet: App.Tweet) => {
+    const addTweet = (tweet: App.Tweet, id?: string) => {
         firebase
             .firestore()
             .collection(COLLECTION_TWEETS)
-            .add(tweet)
-            .then(ref => {
-                ref.set({ id: ref.id }, { merge: true }).catch(console.error);
-            })
+            .add({ ...tweet, comment: id ? id : null })
             .catch(console.error);
     };
 
     const likeTweet = (id: string) => {
-        if (Object.keys(liked).includes(id) && liked[id]) {
-            firebase
-                .firestore()
-                .collection(COLLECTION_TWEETS)
-                .doc(id)
-                .collection(COLLECTION_LIKES)
-                .doc(liked[id])
-                .delete()
-                .catch(console.error);
-
+        if (Object.keys(liked).includes(id)) {
             setLiked(prevState => {
                 const newState = { ...prevState };
                 delete newState[id];
                 return newState;
             });
 
-            return;
-        } else if (Object.keys(liked).includes(id)) {
+            if (liked[id]) {
+                firebase
+                    .firestore()
+                    .collection(COLLECTION_TWEETS)
+                    .doc(id)
+                    .collection(COLLECTION_LIKES)
+                    .doc(liked[id])
+                    .delete()
+                    .catch(console.error);
+            }
+
             return;
         }
 
@@ -129,7 +163,17 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
     };
 
     return (
-        <FirebaseContext.Provider value={{ tweets, addTweet, likeTweet, hasLiked, getLikes }}>
+        <FirebaseContext.Provider
+            value={{
+                tweets,
+                activeTweet,
+                comments,
+                addTweet,
+                setActiveTweetId,
+                likeTweet,
+                hasLiked,
+                getLikes,
+            }}>
             {children}
         </FirebaseContext.Provider>
     );

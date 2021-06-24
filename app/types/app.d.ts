@@ -4,6 +4,7 @@ export namespace App {
         message: string | null;
         image: Image | null;
         date: number;
+        comment: string | null;
     }
 
     interface Image {

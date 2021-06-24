@@ -1,20 +1,21 @@
 import React from "react";
-import { Tweet } from "./Tweet";
-import { useFirebase } from "../context/FirebaseProvider";
 import styled from "styled-components";
+import { Tweet } from "./Tweet";
+import { App } from "../types/app";
 
 const ListWrapper = styled.div``;
 
-export const TweetList: React.FC = () => {
-    const { tweets } = useFirebase();
+interface TweetListProps {
+    tweets: App.Tweet[];
+    isComment?: boolean;
+}
 
+export const TweetList: React.FC<TweetListProps> = ({ tweets, isComment }) => {
     return (
         <ListWrapper>
-            {tweets
-                .sort((a, b) => b.date - a.date)
-                .map(tweet => (
-                    <Tweet key={tweet.id} {...tweet} />
-                ))}
+            {tweets.map(tweet => (
+                <Tweet key={tweet.id} {...tweet} isComment={isComment} />
+            ))}
         </ListWrapper>
     );
 };
