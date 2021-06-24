@@ -6,6 +6,7 @@ import { Input } from "../app/components/Input";
 import { TweetList } from "../app/components/TweetList";
 import { Headline } from "../app/css/typo";
 import { Content } from "../app/css/content";
+import { Meta } from "../app/components/Meta";
 
 const HomeWrapper = styled.div`
     position: absolute;
@@ -59,10 +60,11 @@ const HomeStage = styled.div`
 const Home: React.FC = () => {
     return (
         <HomeWrapper>
+            <Meta title="Twitter Board" />
             <HomeInner>
                 <HomeContent breakMobile>
                     <HomeHeader>
-                        <Headline>Tweets</Headline>
+                        <Headline>Board</Headline>
                     </HomeHeader>
                 </HomeContent>
                 <HomeStage>
