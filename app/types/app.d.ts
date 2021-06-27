@@ -5,6 +5,7 @@ export namespace App {
         image: Image | null;
         date: number;
         comment: string | null;
+        name: string;
     }
 
     interface Image {

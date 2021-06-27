@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { App } from "../types/app";
 import firebase from "../lib/firebase";
+import { celebrities } from "../lib/celebrities";
 
 export const COLLECTION_TWEETS = "tweets";
 export const COLLECTION_LIKES = "likes";
@@ -101,10 +102,12 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
     };
 
     const addTweet = (tweet: App.Tweet, id?: string) => {
+        const name = celebrities[Math.floor(Math.random() * celebrities.length - 1) + 1];
+
         firebase
             .firestore()
             .collection(COLLECTION_TWEETS)
-            .add({ ...tweet, comment: id ? id : null })
+            .add({ ...tweet, name, comment: id ? id : null })
             .catch(console.error);
     };
 

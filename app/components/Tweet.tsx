@@ -68,6 +68,7 @@ interface TweetProps extends App.Tweet {
 }
 
 export const Tweet: React.FC<TweetProps> = ({
+    name,
     message,
     image,
     date,
@@ -84,7 +85,7 @@ export const Tweet: React.FC<TweetProps> = ({
         <Link href={"/" + id}>
             <TweetWrapper>
                 <TweetHead>
-                    <TweetName>Rosé</TweetName>
+                    <TweetName>{name}</TweetName>
                     <TweetInfo> · {parseDate(date)}</TweetInfo>
                 </TweetHead>
                 {message && <TweetText>{message}</TweetText>}
