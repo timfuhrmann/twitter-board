@@ -4,7 +4,7 @@ export const parseDate = (time: number) => {
     const date = new Date(diff);
     const created = new Date(time);
 
-    const hours = date.getUTCHours();
+    const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = date.getUTCMinutes();
     const day = created.getDate();
     const month = created.getMonth() + 1;
