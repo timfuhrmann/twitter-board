@@ -93,7 +93,14 @@ export const Input: React.FC<InputProps> = ({ placeholder, onTweet }) => {
             return;
         }
 
-        onTweet({ message: inputContent, image: image, date: Date.now(), comment: null, id: "" });
+        onTweet({
+            message: inputContent,
+            image: image,
+            date: Date.now(),
+            comment: null,
+            id: "",
+            name: "",
+        });
         inputReset();
     };
 
