@@ -18,6 +18,14 @@ const TweetWrapper = styled.div`
     }
 `;
 
+const TweetLink = styled.a`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+`;
+
 const TweetImage = styled.img`
     max-width: 100%;
     border-radius: 2rem;
@@ -42,6 +50,8 @@ const TweetInfo = styled.span`
 `;
 
 const TweetControls = styled.div`
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     color: ${p => p.theme.lightGrey};
@@ -57,6 +67,8 @@ const TweetControls = styled.div`
 `;
 
 const CommentWrapper = styled.div`
+    position: relative;
+    z-index: 1;
     margin-top: 2rem;
     border-radius: 1rem;
     border: 0.1rem solid ${p => p.theme.grey};
@@ -82,43 +94,43 @@ export const Tweet: React.FC<TweetProps> = ({
     const commentTweet = comment ? tweets.find(tweet => tweet.id === comment) : undefined;
 
     return (
-        <Link href={"/" + id}>
-            <TweetWrapper>
-                <TweetHead>
-                    <TweetName>{name}</TweetName>
-                    <TweetInfo> · {parseDate(date)}</TweetInfo>
-                </TweetHead>
-                {message && <TweetText>{message}</TweetText>}
-                {image && (
-                    <TweetImage
-                        alt="Tweet Image"
-                        src={image.url}
-                        width={image.width}
-                        height={image.height}
-                    />
-                )}
-                {!hideControls && (
-                    <TweetControls>
-                        <ButtonIcon>
+        <TweetWrapper>
+            <TweetHead>
+                <TweetName>{name}</TweetName>
+                <TweetInfo> · {parseDate(date)}</TweetInfo>
+            </TweetHead>
+            {message && <TweetText>{message}</TweetText>}
+            {image && (
+                <TweetImage
+                    alt="Tweet Image"
+                    src={image.url}
+                    width={image.width}
+                    height={image.height}
+                />
+            )}
+            {!hideControls && (
+                <TweetControls>
+                    <Link href={"/" + id} passHref>
+                        <ButtonIcon as="a">
                             <Icon name="message" icon={Message} />
                         </ButtonIcon>
-                        <ButtonIconRed
-                            onClick={e => {
-                                e.preventDefault();
-                                likeTweet(id);
-                            }}
-                            active={hasLiked(id)}
-                            data-info={getLikes(id) > 0 ? getLikes(id) : undefined}>
-                            <Icon name="heart" icon={Heart} />
-                        </ButtonIconRed>
-                    </TweetControls>
-                )}
-                {commentTweet && !isComment && (
-                    <CommentWrapper>
-                        <Tweet {...commentTweet} isComment hideControls />
-                    </CommentWrapper>
-                )}
-            </TweetWrapper>
-        </Link>
+                    </Link>
+                    <ButtonIconRed
+                        onClick={() => likeTweet(id)}
+                        active={hasLiked(id)}
+                        data-info={getLikes(id) > 0 ? getLikes(id) : undefined}>
+                        <Icon name="heart" icon={Heart} />
+                    </ButtonIconRed>
+                </TweetControls>
+            )}
+            {commentTweet && !isComment && (
+                <CommentWrapper>
+                    <Tweet {...commentTweet} isComment hideControls />
+                </CommentWrapper>
+            )}
+            <Link href={"/" + id} passHref>
+                <TweetLink />
+            </Link>
+        </TweetWrapper>
     );
 };
