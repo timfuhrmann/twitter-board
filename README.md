@@ -1,6 +1,4 @@
-A small, public twitter board built with Next.js and Google Cloud Platform.
-
-Like, comment or write a message here: https://next-twitter-gcp.vercel.app/
+A small twitter board built with Next.js and Google Cloud Platform.
 
 ## Getting Started
 
